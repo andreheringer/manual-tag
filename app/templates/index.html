@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+ <div class="container">
+        Preencha os campos abaixo e clique em Iniciar:
+        <form action="" method="post" name="login">
+        
+            {{ form.hidden_tag() }} 
+        
+            {% for field,error in form.errors.items() %}
+            <span style="color: red;"> {{ form.error_msg[field] }}: {{ form.labels[field] }}</span>
+            <br>
+            {% endfor %}<br>
+ 
+            
+            <br>
+            
+            <p>
+              Nome: {{ form.name(size=30) }}
+            </p>
+              Quantos anos você tem?
+            <p>
+              {{ form.age }}
+            </p>
+            
+            <p>
+              Sexo:
+            </p>
+                
+            <table>
+            <tbody> 
+              <tr>
+                {% for subfield in form.gender %}
+                    <td>{{ subfield }} {{ subfield.label }} </td>
+                    <td>  &nbsp;  </td> 
+                {% endfor %}
+            </tr>
+            </table>
+            </tbody>             
+            <p>
+              <input class="button-primary" value="Iniciar" type="submit">
+            </p>
+        </form>
+</div>
+
+{%endblock%}
