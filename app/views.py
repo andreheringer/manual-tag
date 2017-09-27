@@ -60,8 +60,6 @@ def evaluate(obj_type):
         questions = MLQuestions()
         selected = load_objs('data/selected_objects_movielens.txt')
 
-    #print (selected)
-
     if 'user_id' in session:
         current_id = session['user_id']
         print("session_userid=", current_id)
@@ -83,8 +81,6 @@ def evaluate(obj_type):
         
         #random select the objs to be evaluated, compare the objects returned by the query
         #with the one already evaluated by the user
-        
-        #objs = Object.query.filter_by(obj_type=obj_type).all()
 
         evaluations = Evaluation.query.all()
         
@@ -102,10 +98,7 @@ def evaluate(obj_type):
 
 
         
-        #for obj in objs:
-        
         sorted_nevaluations = sorted(nevaluations.items(), key=itemgetter(1))
-        #print (sorted_nevaluations)
         
         for (oid, freq) in sorted_nevaluations:
             if oid not in evaluated_ids: #and obj.id in selected:
@@ -117,43 +110,18 @@ def evaluate(obj_type):
                 
                 form = EvaluationForm()
                 
-                #(title, sanity, tags, img) = selected[obj.id]
-                #obj.tags = tags
-                #obj.img = img
-                #form.prev_knowledge(onclick_="enableSending();")
-                #form.submit(disabled_="disabled")
-                
-                #form.prev_knowledge.__html__ = form.prev_knowledge.__html__().replace("input id=", "onclick=\"enableSending();\" input id=")
-                #print (form.prev_knowledge.__html__().replace("input id=", "onclick=\"enableSending();\" input id="))
-                #print (form.submit.__html__())
-                
-                #print ("\n", form.addtags.__html__(), "\n")
-                
-                
-                #form.evaluation_tags.choices = [(tag.string, tag.string) for tag in obj.tags]
-                #print("request:", request.form)
-                #print("request.method:", request.method)
-                #print ("PrevKnowledge", form.prev_knowledge.data)
-                
 
                 chosen_tags = []
                 for tag in obj.tags:
                     if tag.string in request.form:
-                        chosen_tags.append(tag.string)
-                        
-                #print("Chosen tags:", chosen_tags)            
+                        chosen_tags.append(tag.string)         
                 
-                if request.method == 'POST':    #if form.validate_on_submit(): #and form.prev_knowledge.data != None:
-                    #print("request.form:", request.form)
+                if request.method == 'POST':    
                     know = form.prev_knowledge.data
                     if know == 'None':
                         know = -1
                     eva = Evaluation(current_id, obj.id, int(know))
                     judgements = []
-                    
-                    #if form.skip.data:
-                    #    print("Pulou")
-                    #    return redirect(url_for('evaluate', obj_type=obj_type))
                     
                     if form.submit.data: #request.form['submit'] == 'Enviar':
                         #print("Formulario enviado")
@@ -166,12 +134,7 @@ def evaluate(obj_type):
                     
                     if not form.skip.data:
                         eva.additional_tags = request.form['addtags']
-                        #print ("ADD:", eva.additional_tags)
-                        #print("Evaluation:\n", eva)
-                        #for j in eva.judgements:
-                        #    print(j)
-                        #print ("Additional tags:", eva.additional_tags)
-                    
+
                     db.session.add(eva)
                     db.session.commit()
                     
@@ -186,7 +149,6 @@ def evaluate(obj_type):
 
                 #if not validate_on_submmit
                 return render_template('evaluate.html', obj=obj, updated_info=updated_info, eva_form=form, questions=questions, progress=nevaluated+1, nevals=NEVALS)
-            #return redirect(url_for('thanks', obj_type=obj_type, nevals=NEVALS))
     else:
         return redirect(url_for('index', obj_type=obj_type))
 

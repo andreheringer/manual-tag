@@ -22,14 +22,7 @@ class RegisterForm(Form):
 class EvaluationForm(Form):        
     prev_knowledge = RadioField('Knowledge', choices=[(2, 'Muito'), (1, 'Pouco'), (0, 'Nada')])
     submit = SubmitField(label='Enviar', render_kw={'disabled':'disabled'})
-    #submit = SubmitField(label='Enviar')
     skip = SubmitField(label='Pular')
-    #addtags = StringField('AddTags')
-    
-    #evaluation_tags = SelectMultipleField('ChosenTags', widget=SelectCheckbox()) 
-    
-    #def set_choices(taglist):
-    #    evaluation_tags.choices = [(tag, tag) for tag in taglist]
 
 
 
